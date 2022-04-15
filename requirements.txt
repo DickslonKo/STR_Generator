@@ -1,0 +1,7 @@
+pandas
+python-docx
+numpy
+selenium
+beautifulsoup4
+webdriver_manager
+streamlit
