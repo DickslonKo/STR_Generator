@@ -1,4 +1,4 @@
-service: STR_Generator
+service: str-generator
 runtime: custom
 env: flex
 manual_scaling:
