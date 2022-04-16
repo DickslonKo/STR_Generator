@@ -5,3 +5,5 @@ selenium
 beautifulsoup4
 webdriver_manager
 streamlit
+google-cloud-storage
+google-api-python-client>=1.7.12

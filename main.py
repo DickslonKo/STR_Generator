@@ -6,9 +6,13 @@ import numpy as np
 from datetime import date
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver import ChromeOptions
 from bs4 import BeautifulSoup
 import streamlit as st
+from google.cloud import storage
+import os
+import time
 
 st.title('Welcome to Suspicious Transaction Report Generator')
 
@@ -23,6 +27,17 @@ if uploaded_files is not None:
 
 if uploaded_files1 is not None:
     df_txn = pd.read_csv(uploaded_files1)
+
+now = datetime.now()
+now_name = now.strftime("%H%M%S")
+
+bucket_name = 'final_project0820'
+STR_name = f'STR_{now_name}.docx'
+internet_search_name = f'Internet_search_{now_name}.docx'
+os.environ.setdefault("My First Project", "quantum-engine-346005")
+storage_client = storage.Client.from_service_account_json("quantum-engine-346005-76af3461d45b.json")
+bucket = storage_client.get_bucket(bucket_name)
+
 
 if st.button('Generate a STR'):
     if df.loc[12][2] is not np.nan:
@@ -183,12 +198,15 @@ if st.button('Generate a STR'):
 
     document.save(r"STR.docx")
 
-    driver = webdriver.Chrome(executable_path = 'path/to/chromedriver')
+    blob = bucket.blob(STR_name)
+    blob.upload_from_filename(f'./STR.docx')
     options = webdriver.ChromeOptions()
-    driver.maximize_window()
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver.implicitly_wait(5)
+    driver = webdriver.Chrome(ChromeDriverManager().install(),options=options)
+    driver.implicitly_wait(0.5)
     query = list(Cr_Cpty.index) + list(Dr_Cpty.index)
     document1 = Document()
 
@@ -199,7 +217,7 @@ if st.button('Generate a STR'):
         url = "http://www.google.com/search?q=" + query[i] + "&start=" +      'str((page - 1) * 3)'
         driver.get(url)
         google_search = driver.save_screenshot("google.png")
-        r.add_picture("google.png", width=Inches(6), height=Inches(3))
+        r.add_picture("google.png", width=Inches(6), height=Inches(3.8))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         search = soup.find_all('div', class_="yuRUbf")
@@ -207,7 +225,7 @@ if st.button('Generate a STR'):
             try:
                 driver.get(h.a.get('href'))
                 image = driver.save_screenshot('image.png')
-                r.add_picture("image.png", width=Inches(6), height=Inches(3))
+                r.add_picture('image.png', width=Inches(6), height=Inches(3.8))
                 r.add_text(h.a.get('href'))
             except:
                 pass
@@ -215,20 +233,13 @@ if st.button('Generate a STR'):
 
     document1.save(r"Internet search.docx")
 
-with open("STR.docx", "rb") as STR:
-    STR = STR.read()
+    blob = bucket.blob(internet_search_name)
+    blob.upload_from_filename(f'./Internet search.docx')
 
-st.download_button(
-     label="Download STR",
-     data=STR,
-     file_name='STR.docx'
- )
+    driver.quit()
+    st.write("Job Completed! Your STR report and internet search result can be downloaded via following links.")
+    st.subheader("STR Report")
+    st.markdown(f'https://storage.googleapis.com/{bucket_name}/{STR_name}')
+    st.subheader("Internet Search")
+    st.markdown(f'https://storage.googleapis.com/{bucket_name}/{internet_search_name}')
 
-with open("Internet search.docx", "rb") as Internet_search:
-    Internet_search = Internet_search.read()
-
-st.download_button(
-     label="Download Internet research",
-     data=Internet_search,
-     file_name='Internet search.docx.docx'
- )
