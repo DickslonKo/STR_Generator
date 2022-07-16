@@ -1,0 +1,38 @@
+A1,Customer Name,"ABC CO., Ltd",
+A2,CI Number,123456,
+A3,Alert ID and Scenario Name,Alert ID: 45678,Scenario Name: XYZ2010GG
+A4,Scenario Description,Cash Transaction,
+A5,Risk Factors,"High Velocity Funds
+Multiple Branch Usage",
+,,,
+B1,Triggering Values:,,
+B2,No. of Triggered Transactions:,,
+,,,
+IC1,Reported to JFIU in previous 12 months:,,
+IC2,Risk Classification (AML Risk Rating):,,
+IC3,Date of Birth:,,
+IC4,Occupation:,,
+IC5,Industry Description:,,
+IC6,Industry related to high risk industry:,,
+IC7,Employer:,,
+IC8,Residential Address:,,
+IC9,Document ID & Issuing Country:,,
+IC10,"Country related to JRA:	",Nil,
+IC11,"Account Opening Date:	",,
+,,,
+CC1,Report to JFIU  in previous 12 months,Nil,
+CC2,Risk Classification,Normal,
+CC3,Industry Description,FOOD DISTRIBUTORS,
+CC4,Industry related to High Risk Industry,Nil,
+CC5,Office Address,"777, PK Centre, Admiralty, Hong Kong Island, HK",
+CC6,Document ID & Issuing Country,7890123,Hong Kong
+CC7,Country related to JRA,Nil,
+CC8,Account Opening Date,7-Jul-07,
+CC9,Name of Beneficial Owner and Shareholder,Nil,
+CC10,Name of Key Connected Party,"Ultimate Beneficial Owner
+Company Director
+Company Director
+Company Director","Seven Lam
+Seven Lam
+Pikachu Lee
+Ball Chan"
